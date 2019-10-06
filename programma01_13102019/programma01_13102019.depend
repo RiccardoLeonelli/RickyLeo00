@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1570192506 source:c:\users\massimo\desktop\uni\programma01_13102019\main.c
+	<stdio.h>
+	<stdlib.h>
+	<float.h>
+	<limits.h>
+
