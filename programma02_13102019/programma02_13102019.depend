@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1570467495 source:c:\users\massimo\desktop\uni\programma02_13102019\main.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+
