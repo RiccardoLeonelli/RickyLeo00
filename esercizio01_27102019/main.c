@@ -1,3 +1,5 @@
+// | Autori : Riccardo Leonelli , Davide Di Marco , Filippo Venturini |
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -5,15 +7,20 @@
 
 int main()
 {
-    int i=0;
+    int i=0;    //dichiaro le variabili//
     char stringa[100];
-    char c;
-
+    char c,k;
     int alfanumerico=0,alfabetico=0,numerico=0,spaziotabulazione=0,controllo=0,grafico=0,minuscolo=0,maiuscolo=0,stampabile=0,spazio=0,esadecimale=0,punteggiatura=0;
+
     memset(stringa,'\0',sizeof(stringa));
-    printf(" Inserisci stringa  \n (Per terminare digitare: '#' ):\n\n  ");
-    while ((c=getchar())!='#'){
+    printf(" Inserisci stringa :  \n ");
+
+    while ((c=getchar())!='#'){//acquisisco e analizzo ogni valore del vettore inserito
+
+
             stringa[i++]=c;
+
+
             if (isalnum(c)!=0){//conteggio alfanumerici
                 ++alfanumerico;
             }
@@ -54,7 +61,17 @@ int main()
 
 
     }
-    printf(" la stringa e' :\n %s\n\n",stringa);
-    printf(" numero di:\n alfanumerico= %d\n alfabetico= %d\n numerico= %d\n spaziotabulazione= %d\n controllo= %d\n grafico=%d\n minuscolo= %d\n maiuscolo= %d\n stampabile= %d\n spazio= %d\n esadecimale= %d\n punteggiatura= %d",alfanumerico,alfabetico,numerico,spaziotabulazione,controllo,grafico,minuscolo,maiuscolo,stampabile,spazio,esadecimale,punteggiatura);
+    printf("\n la stringa e' :\n %s\n\n",stringa);//stampo il vettore
+    printf(" numero di:\n alfanumerico= %d\n alfabetico= %d\n numerico= %d\n spaziotabulazione= %d\n controllo= %d\n grafico= %d\n minuscolo= %d\n maiuscolo= %d\n stampabile= %d\n spazio= %d\n esadecimale= %d\n punteggiatura= %d",alfanumerico,alfabetico,numerico,spaziotabulazione,controllo,grafico,minuscolo,maiuscolo,stampabile,spazio,esadecimale,punteggiatura);
+
+    printf("\n Inserisci caratterre : ");
+    fflush(stdin);
+    scanf("%c",&k);//acquisisco un carartere dall ' utente
+    fflush(stdin);
+    printf("\n Il carattere Maiuscolo e' : %c "
+           "\n Il carattere Minuscolo e' : %c ",toupper(k),tolower(k));//trasformo il Char dato dall' utente nel rispettivo maiuscolo e minuscolo
+
+
+
     return 0;
 }
