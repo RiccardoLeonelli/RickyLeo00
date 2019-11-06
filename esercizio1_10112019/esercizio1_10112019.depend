@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1573075697 source:c:\users\massimo\desktop\uni\esercizio1_10112019\main.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+
