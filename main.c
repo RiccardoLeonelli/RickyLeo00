@@ -1,59 +1,90 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define True 1
-#define False 0
+#include <string.h>
+#include <ctype.h>
 
 int main()
 {
-    int max,verifica,i,j,contatore=0,primo;
-    int *vettore;//dichiaro il mio array dinamico dove inserirò i miei numeri primi//
+    int verifica,nparole,contatore=5,i=0,j=0,fine=0;
+    char elemento,*parola,**parole;
 
-    printf("inserisci un valore massimo: ");
-    verifica=scanf("%d",&max);//chiedo all' utente di inserire il valore entro il quale il codice troverà numeri primi//
-    if (verifica!=1 || max<=0){//verifico se il valore inserito è corretto//
-        printf("\n | valore inserito non corretto | \n");
-        exit(1);//in caso contrario chiudo il programma//
+    printf("inserisci quante parole verranno contenute nell' array: ");
+    verifica=scanf("%d",&nparole);//l' utente inserisce quanti puntatori a char dovrà contenere l ' array dinamico
+    fflush(stdin);
+    if (verifica!=1 || nparole<=0 ){
+        printf("valore inserito errato");
+        exit(1);
     }
 
-    vettore=NULL;//inizializzo l'array//
 
-    for (i=1;i<=max;i++){//apro un ciclo che analizzerà ogni valore intero da 0 a max//
+    parole=(char **) malloc(nparole*sizeof(char*));//alloco al vettore dinamico memoria per la determinata quantità di puntatori
+    if (parole==NULL){//in caso dopo la sdallocazione fallisca per mancanza di memoria chiudo il programma
+        printf("memoria insufficente");
+        exit(1);
+    }
 
-        for (j=1;j<=i;j++){//apro un ciclo che mi permette di verificare se il numero i è primo o no//
-            if (i%j==0 && j!=1 && j!=i){
-                primo=False;
-                break;//se trova anche solo un valore (diverso da 1 o da se stesso) per cui i è divisibile esce e va al numero i successivo//
-            }
-            else{
-                primo=True;//se no il numero i è considerato primo//
-            }
 
+    for (j=0;j<nparole;j++){
+        i=0;
+        fine=0;
+        free(parola);
+        parola=NULL;//faccio puntare a nulla il puntatore a vettore per poter inserire una nuova parola
+        contatore=10;
+
+
+
+        printf("Inserisci parola n.%d:",j+1);
+
+        while (!fine) {
+
+             verifica=scanf("%c",&elemento);//chiedo all' utente il char
+             if (verifica!=1){
+                printf("valore inserito errato");
+                exit(1);
+             }
+
+
+
+
+             if (elemento=='\n' || elemento==' ') {//quando termina la parola chiudo il ciclo terminando il vettore parola
+                    fine = 1;
+             }
+             else {
+                 i++;
+
+                 if (i==1 || contatore%10==0){//realloco memoria all' ampliarsi del vettore parola
+                    parola=(char *) realloc(parola,i*sizeof(char)*10);
+                    contatore=contatore*2;
+                 }
+
+                 if (parola==NULL) {//in caso dopo la reallocazione fallisca per mancanza di memoria chiudo il programma
+                     printf("Memoria insufficiente");
+                     exit(1);
+                 }
+
+                 parola[i-1]=elemento;//inserisco il cararattere inserito all' interno del vettore
+
+
+             }
         }
 
-        if (primo==True){//se il numero i è primo..//
+        parola[i]='\0';//aggiungo il terminatore
+        printf("\nla parola n.%d e' %s \n\n",j+1,parola);
+        parole[j]=parola;//inserisco il vettore dinamico di caratteri all' interno del vettore dinamico di puntatori contenenti stringhe
 
-            vettore=(int *)realloc(vettore,i*sizeof(int));//ingrandisco la capienza (in termini di memoria) del vettore//
-            if (vettore==NULL){
-                printf("memoria insufficente");
-                exit(1);//se la memoria è insufficente esce dal programma//
-            }
-            else{
-                vettore[contatore]=i;//aggiungo il numero primo alla prima posizione disponibile del vettore//
-                contatore++;
-            }
+    }
+    for (j=0;j<nparole;j++){
+        for (i=0;i<strlen(parole[j]);i++){
+            printf("%c",toupper(*(*(parole+j)+i)));//stampo ogni carattere di ogni parola in maiuscolo
         }
-    }
-
-
-    printf("i numeri primi compresi tra 0 e %d sono :\n",max);
-    for (i=0;i<contatore;i++){//stampo tutti i numeri primi trovati//
-        printf(" %d \n",vettore[i]);
-
+        puts("");
 
     }
-    free(vettore);
 
-
+    for (j=0;j<nparole;j++){//libero la memoria
+        free(parole[j]);
+    }
+    free(parole);
 
     return 0;
 }
