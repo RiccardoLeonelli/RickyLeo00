@@ -1,0 +1,372 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#define TOT_ESAMI 10
+#define NUM_ESAMI 2
+#define MAX_ST 10
+#define ERR "|ERRORE|\n\n|valore inserito non compatibile|\n\nDigitare nuovamente il valore --> "
+#define STAMPA "\nScelga una delle proposte: \n1) INSERISCI UN NUOVO STUDENTE \n2) STAMPA INFO STUDENTE \n3) MODIFICA INFO STUDENTE \n4) MEDIA VOTI STUDENTI \n5)ESCI\n\n-->"
+
+
+
+int i=0;
+void insegnamenti();
+int aggiungi_st(int);
+void stampa_st();
+void modifica_st();
+void media();
+
+
+/////////////////STRUTTURE///////////////////
+
+typedef struct{
+    int codice;
+    int voto;
+} voti_esami;
+
+
+struct{
+    int codice;
+    char descrizione[50];
+    int anno_somm;
+    int crediti;
+}insegnamento[TOT_ESAMI];
+
+struct{
+    int n_matricola;
+    char nome[10];
+    char cognome[10];
+    int anno;
+    voti_esami pianoStudi[NUM_ESAMI];
+}studente[MAX_ST];
+
+///////////////////////FUNZIONI///////////////////////////
+
+void insegnamenti(){
+    insegnamento[0].codice=1;
+    insegnamento[0].descrizione[30]="Programmazione";
+    insegnamento[0].anno_somm=1;
+    insegnamento[0].crediti=12;
+
+    insegnamento[1].codice=2;
+    insegnamento[1].descrizione[30]="Analisi";
+    insegnamento[1].anno_somm=1;
+    insegnamento[1].crediti=12;
+
+    insegnamento[2].codice=3;
+    insegnamento[2].descrizione[30]="Inglese";
+    insegnamento[2].anno_somm=1;
+    insegnamento[2].crediti=6;
+
+    insegnamento[3].codice=4;
+    insegnamento[3].descrizione[30]="Alegebra e Geometria";
+    insegnamento[3].anno_somm=1;
+    insegnamento[3].crediti=12;
+
+    insegnamento[4].codice=5;
+    insegnamento[4].descrizione[30]="Architetture degli Elaboratori";
+    insegnamento[4].anno_somm=2;
+    insegnamento[4].crediti=12;
+
+    insegnamento[5].codice=6;
+    insegnamento[5].descrizione[30]="Basi di Dati";
+    insegnamento[5].anno_somm=2;
+    insegnamento[5].crediti=12;
+
+    insegnamento[6].codice=7;
+    insegnamento[6].descrizione[30]="Fisica";
+    insegnamento[6].anno_somm=2;
+    insegnamento[6].crediti=6;
+
+    insegnamento[7].codice=8;
+    insegnamento[7].descrizione[30]="Programmazione a Oggetti";
+    insegnamento[7].anno_somm=2;
+    insegnamento[7].crediti=12;
+
+    insegnamento[8].codice=9;
+    insegnamento[8].descrizione[30]="Programmazione di Reti";
+    insegnamento[8].anno_somm=2;
+    insegnamento[8].crediti=6;
+
+    insegnamento[9].codice=10;
+    insegnamento[9].descrizione[30]="Sistemi Operativi";
+    insegnamento[9].anno_somm=2;
+    insegnamento[9].crediti=12;
+}
+
+////////////AGGIUNGI STUDENTE/////////////////
+
+int aggiungi_st(int i){
+    int verifica,occupato=false,Nmatricola;
+    printf("Inserire il numero di matricola del nuovo studente: ");//chiedo il numero della nuova matricola
+    while (1){
+        verifica=scanf("%d",&Nmatricola);
+        fflush(stdin);
+        if (verifica!=1){
+           printf(ERR);
+           continue;
+        }
+        for (int j;j<MAX_ST;j++){
+            if (studente[j].n_matricola==Nmatricola){
+                occupato=true;
+            }
+        }
+        if (occupato==false){
+            studente[i].n_matricola=Nmatricola;
+            break;
+        }
+        else{
+            printf("|ERRORE|\n\n|Numero di matricola gi� occupato|\n\nDigitare nuovamente il valore --> ");
+        }
+
+
+    }
+
+    printf("Inserire il nome dello studente: ");
+    while (1){
+        verifica=scanf("%s",&studente[i].nome);
+        fflush(stdin);
+        if (verifica==1){
+           break;
+        }
+        printf(ERR);
+
+    }
+
+    printf("Inserire il cognome dello studente: ");
+    while (1){
+        verifica=scanf("%s",&studente[i].cognome);
+        fflush(stdin);
+        if (verifica==1){
+           break;
+        }
+        printf(ERR);
+
+    }
+
+    printf("Inserire l' anno dell' immatricolazione : ");
+    while (1){
+        verifica=scanf("%d",&studente[i].anno);
+        fflush(stdin);
+        if (verifica==1){
+           break;
+        }
+        printf(ERR);
+
+    }
+
+    printf("\nSciegliere 5 di questi esami che saranno il piano di studi dello studente:\n"
+           "CODICE 1) Programmazione\nCODICE 2) Analisi\nCODICE 3) Inglese\nCODICE 4) Algebra e Geometria\n"
+           "CODICE 5) Architetture degli Elaboratori\nCODICE 6) Basi di Dati\nCODICE 7) Fisica\n"
+           "CODICE 8) Programmazione a Oggetti\nCODICE 9) Programmazione di Reti \nCODICE 10) Sistemi Operativi\n\n"
+           "inserire i codici: \n");
+
+    verifica=0;
+    int cod;
+
+    for (int j=0;j<NUM_ESAMI;j++){
+
+        while (1){
+
+            verifica=scanf("%d",&cod);
+            fflush(stdin);
+            if (verifica==1 && cod>0 && cod<11){
+               studente[i].pianoStudi[j].codice=cod;
+               break;
+            }
+            printf(ERR);
+        }
+        puts("\nCodice inserito correttamente\n");
+    }
+    i++;
+}
+
+////////////STAMPA//////////////
+
+void stampa_st(){
+    int Nmatricola,verifica=0,k=0;
+
+    printf("Inserire numero di matricola per visualizzare le info dello studente : ");
+    while (1){
+        verifica=scanf("%d",&Nmatricola);
+        fflush(stdin);
+        if (verifica!=1){
+            printf(ERR);
+            continue;
+        }
+        verifica=false;
+        printf("\n\n");
+        for (int j=0;j<MAX_ST;j++){
+            if (studente[j].n_matricola==Nmatricola){
+                k=j;
+                verifica=true;
+            }
+        }
+        if (verifica==true){
+            break;
+        }
+        else{
+            printf("|ERRORE|\n\n|Numero di matricola inesistente|\n\nDigitare nuovamente il valore --> ");
+        }
+    }
+    printf("NOME : %s\n",studente[k].nome);
+    printf("COGNOME : %s\n",studente[k].cognome);
+    printf("ANNO IMMATRICOLAZIONE : %d\n",studente[k].anno);
+    printf("ESAMI :");
+    for (int j=0;j<NUM_ESAMI;j++){
+           printf("\nCODICE: %d VOTO: %d",studente[k].pianoStudi[j].codice,studente[k].pianoStudi[j].voto);
+    }
+
+
+
+
+}
+
+////////////MODIFICA////////////////
+
+void modifica_st(){
+    int Nmatricola,verifica,cod,voto,k,p;
+    printf("Inserisca il numero della matricola : ");
+    while (1){
+        verifica=scanf("%d",&Nmatricola);
+        fflush(stdin);
+        if (verifica!=1){
+            printf(ERR);
+            continue;
+        }
+        verifica=false;
+        printf("\n\n");
+        for (int j=0;j<MAX_ST;j++){
+            if (studente[j].n_matricola==Nmatricola){
+                k=j;
+                verifica=true;
+            }
+        }
+        if (verifica==true){
+            break;
+        }
+        else{
+            printf("|ERRORE|\n\n|Numero di matricola inesistente|\n\nDigitare nuovamente il valore --> ");
+        }
+    }
+
+    printf("\nAggiungere nuovo voto o modificare voto gia' esistente\n");
+    printf("\nInserire il codice dell' Esame effettuato: ");
+    while (1){
+        verifica=scanf("%d",&cod);
+        fflush(stdin);
+        if (verifica!=1){
+            printf(ERR);
+            continue;
+        }
+        verifica=false;
+        printf("\n\n");
+        for (int j=0;j<MAX_ST;j++){
+            if (studente[k].pianoStudi[j].codice==cod){
+                p=j;
+                verifica=true;
+            }
+        }
+        if (verifica==true){
+            break;
+        }
+        else{
+            printf("|ERRORE|\n\n|Codice inesistente|\n\nDigitare nuovamente il valore --> ");
+        }
+    }
+    printf("\nInserire voto Esame : ");
+    while (1){
+        verifica=scanf("%d",&voto);
+        fflush(stdin);
+        if (verifica==1 && voto>0 && voto<32){
+            studente[k].pianoStudi[p].voto=voto;
+            break;
+        }
+        printf(ERR);
+    }
+
+
+}
+//////////////MEDIA//////////////////
+
+void media(){
+
+    int cod,voto,peso,prossimo=false;
+    float numeratore=0,denominatore=0;
+
+    for (int j=0;j<MAX_ST;j++){
+        for (int k=0;k<NUM_ESAMI;k++){
+            if (studente[j].pianoStudi[k].voto==0){
+                prossimo=true;
+                break;
+            }
+        }
+        if (prossimo==true){
+            prossimo=false;
+            continue;
+        }
+
+        for (int k=0;k<NUM_ESAMI;k++){
+            cod=studente[j].pianoStudi[k].codice;
+            voto=studente[j].pianoStudi[k].voto;
+            for (int p=0;p<TOT_ESAMI;p++){
+                if (insegnamento[p].codice==cod){
+                    peso=insegnamento[p].crediti;
+                    break;
+                }
+            }
+            numeratore+=voto*peso;
+            denominatore+=peso;
+        }
+        printf("\nLa media dei voti dello studente che ha numero di matricola :%d e' :%.2f\n\n",studente[j].n_matricola,numeratore/denominatore);
+        numeratore=0;
+        denominatore=0;
+    }
+
+
+}
+
+///////////////MAIN/////////////////
+int main()
+{
+    int n,verifica;
+
+    insegnamenti();
+
+
+    while (1){
+        printf(STAMPA);
+        while(1){
+            verifica=scanf("%d",&n);
+            if (verifica==1 && n>0 && n<6){
+                break;
+            }
+            printf(ERR);
+        }
+        switch (n){
+            case 1:
+                aggiungi_st(i);
+                break;
+            case 2:
+                stampa_st();
+                break;
+            case 3:
+                modifica_st();
+                break;
+            case 4:
+                media();
+                break;
+            case 5:
+                exit(1);
+        }
+        i++;
+    }
+
+
+
+
+
+
+
+    return 0;
+}
